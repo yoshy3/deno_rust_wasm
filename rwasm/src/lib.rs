@@ -6,6 +6,15 @@ use wasm_bindgen::prelude::*;
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
+#[macro_use]
+extern crate serde_derive;
+
+#[derive(Serialize, Deserialize)]
+pub struct Interval {
+  pub outer: Vec<bool>,
+  pub inner: Vec<bool>,
+}
+
 #[wasm_bindgen]
 pub fn compute(rounds: u32) -> u32 {
   let mut count: u32 = 0;
@@ -18,19 +27,24 @@ pub fn compute(rounds: u32) -> u32 {
 }
 
 #[wasm_bindgen]
-pub fn compute_pseudo_random_fibonacci_series(negative_sign_interval: u32, n: u32) -> u32 {
-  let mut prv_fib_num0 = 0;
-  let mut prv_fib_num1 = 1;
-  let mut cur_fib_num;
+pub fn compute_random(interval_model: &JsValue) -> u32 {
+  let interval: Interval = interval_model.into_serde().unwrap();
+  let num_rows = interval.outer.len();
+  let num_col = interval.inner.len();
   let mut count: u32 = 0;
-  for x in 0..n { 
-    cur_fib_num = prv_fib_num0 + prv_fib_num1;
-    prv_fib_num0 = prv_fib_num1;
-    prv_fib_num1 = cur_fib_num;
-    if x + 1 % negative_sign_interval == 0 {
-      count -= cur_fib_num;
-    } else {
-      count += cur_fib_num;
+  for i in 0..num_rows { 
+    let randomize_row = interval.outer[i];
+    for j in 0..num_col {
+      if randomize_row {
+        let is_negative = interval.inner[j];
+        if is_negative && count > 0 {
+          count -= 1;
+        } else {
+          count += 1;
+        }
+      } else {
+        count += 1;
+      }
     }
   }
   count

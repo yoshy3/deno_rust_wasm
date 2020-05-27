@@ -22,7 +22,12 @@ c. Run on machine
 
 1. deno run --allow-net --allow-read app.ts
 
-// Test server
+// Test server - Nested Loop
 
-1. Deno: curl -d '{"type":"deno","rounds":46340}' -H 'Content-Type: application/json' http://localhost:8000/api
-2. Rust: curl -d '{"type":"rust","rounds":46340}' -H 'Content-Type: application/json' http://localhost:8000/api
+1. Deno: curl -d '{"type":"deno","n":46340}' -H 'Content-Type: application/json' http://localhost:8000/api/nested
+2. Rust: curl -d '{"type":"rust","n":46340}' -H 'Content-Type: application/json' http://localhost:8000/api/nested
+
+// Test server - Pseudo Fibonnaci
+
+1. Deno: curl -d '{"type":"deno","n":46, "negative_sign_interval": 2}' -H 'Content-Type: application/json' http://localhost:8000/api/random
+2. Rust: curl -d '{"type":"rust","n":46, "negative_sign_interval": 2}' -H 'Content-Type: application/json' http://localhost:8000/api/random

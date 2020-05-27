@@ -10,7 +10,9 @@ edition = "2018"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-wasm-bindgen = "0.2"
+serde = "1.0.110"
+serde_derive = "1.0.110"
+wasm-bindgen = { verseion = "0.2", features = ["serde-serialize"] }
 
 # `wee_alloc` is a tiny allocator for wasm that is only ~1K in code size
 # compared to the default allocator's ~10K. It is slower than the default
