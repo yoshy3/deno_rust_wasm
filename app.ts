@@ -48,16 +48,8 @@ router.post("/api", async (ctx: { request: Request; response: Response }) => {
   const scale = 1000000; // nanoseconds
   const start = performance.now() * scale;
 
-  let count = 0;
-  if (type == "deno") {
-    for (let i = 0; i < rounds; i++) {
-      for (let j = 0; j < rounds; j++) {
-        count += 1;
-      }
-    }
-  } else {
-    count = rwasm.compute(rounds);
-  }
+  // nest loop
+  const count = nestedLoopSummation(type, rounds, rwasm);
 
   const duration = performance.now() * scale - start;
 
@@ -69,3 +61,17 @@ app.use(router.allowedMethods());
 
 console.log("Server started @ http://localhost:8000");
 await app.listen({ port: 8000 });
+
+function nestedLoopSummation(type: string, n: number, rwasm: any): number {
+  let count = 0;
+  if (type == "deno") {
+    for (let i = 0; i < n; i++) {
+      for (let j = 0; j < n; j++) {
+        count += 1;
+      }
+    }
+  } else {
+    count = rwasm.compute(n);
+  }
+  return count;
+}
