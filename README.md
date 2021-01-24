@@ -16,7 +16,7 @@ c. Run on machine
 // Build rwasm
 
 1. cd into rwasm directory.
-2. Run "wasm-pack buld".
+2. Run "wasm-pack build".
 
 // Run server
 
