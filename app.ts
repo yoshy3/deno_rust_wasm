@@ -20,8 +20,10 @@ const app = new Application();
 // routes
 const router = new Router();
 router.post("/api", async ({ request, response }: { request: Request, response: Response }) => {
+
   const result = request.body();
   const body = await result.value;
+  console.log(`body: ${result} type: ${body.type} rounds: ${body.rounds}` );
   if (body == undefined || body.type == undefined || body.rounds == undefined) {
     response.status = 400;
     response.body = { error: "Invalid data" };
